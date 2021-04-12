@@ -28,28 +28,28 @@ def login():
         password_input = request.form['password']
 
         #datebase validation
-        conn = mydb.cursor()
+        cursor = mydb.cursor(dictionary=True)
         try:
-            conn.execute("SELECT * FROM users WHERE password = '%s' and email = '%s'" % (password_input, email_input))
-            result = conn.fetchall()
+            cursor.execute("SELECT * FROM users WHERE password = '%s' and email = '%s'" % (password_input, email_input))
+            result = cursor.fetchone()
+            cursor.close()
 
-            session['username'] = result[0][2]
-            print("##############################")
-            print(session['username'])
-            session['lastname'] = result[0][3]
-            session['nickname'] = result[0][5]
-            session['age'] = result[0][6]
-            session['email'] = result[0][7]
-            session['city'] = result[0][8]
+            session['username'] = result['name']
+            session['lastname'] = result['lastName']
+            session['nickname'] = result['nickname']
+            session['age'] = result['age']
+            session['email'] = result['email']
+            session['city'] = result['city']
 
-            return redirect(url_for('user'))
-        except:
-            return "Cos poszlo nie tak"
+            return render_template('user.html')
+        except Exception as error:
+            print(error)
     
+    else:
+        return render_template('login.html')
 
-    return render_template('login.html')
 
-@app.route('/user')
+@app.route('/user', methods=['GET', 'POST'])
 def user():
     return render_template('user.html')
 
