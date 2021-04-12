@@ -22,35 +22,39 @@ mydb = mysql.connector.connect(
 
 @app.route('/')
 def index():
-    return redirect(url_for('login'))
+    return render_template('home.html')
 
 ######## Login page ########
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        email_input = request.form['email']
-        password_input = request.form['password']
-
-        #datebase validation
-        try:
-            cursor = mydb.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM users WHERE password = '%s' and email = '%s'" % (password_input, email_input))
-            result = cursor.fetchone()
-            cursor.close()
-
-            session['nickname'] = result['nickname']
-            session['email'] = result['email']
-
-
-            return redirect(url_for('user', nickname=session['nickname']))
-            
-        except Exception as error:
-            #Dev info
-            print(error)
-    
+    if session.get('logged_in') == True:
+        return redirect(url_for('user', nickname=session['nickname'])) 
     else:
-        return render_template('login.html')
+        if request.method == 'POST':
+            email_input = request.form['email']
+            password_input = request.form['password']
+
+            #datebase validation
+            try:
+                cursor = mydb.cursor(dictionary=True)
+                cursor.execute("SELECT * FROM users WHERE password = '%s' and email = '%s'" % (password_input, email_input))
+                result = cursor.fetchone()
+                cursor.close()
+
+                session['loggedIn'] = True
+                session['nickname'] = result['nickname']
+                session['email'] = result['email']
+
+
+                return redirect(url_for('user', nickname=session['nickname']))
+                
+            except Exception as error:
+                #Dev info
+                print(error)
+        
+        else:
+            return render_template('login.html')
 
 
 ######### Registration page ###########
