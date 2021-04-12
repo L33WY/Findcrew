@@ -2,11 +2,12 @@ from flask import Flask, redirect, render_template, url_for, session, request
 from flask_mysqldb import MySQL
 import mysql.connector
 
+#Flask setup
 app = Flask(__name__)
 app.secret_key = "dusadhHdu13u1HE1h3H3EIjdas1pop23j"
 
-#Database
 
+#Database
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
@@ -15,11 +16,15 @@ mydb = mysql.connector.connect(
 )
 
 
+#################### Wirtyny ###################
+
+#index page
+
 @app.route('/')
 def index():
     return redirect(url_for('login'))
 
-# Logowanie
+######## Login page ########
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -28,8 +33,8 @@ def login():
         password_input = request.form['password']
 
         #datebase validation
-        cursor = mydb.cursor(dictionary=True)
         try:
+            cursor = mydb.cursor(dictionary=True)
             cursor.execute("SELECT * FROM users WHERE password = '%s' and email = '%s'" % (password_input, email_input))
             result = cursor.fetchone()
             cursor.close()
@@ -42,7 +47,9 @@ def login():
             session['city'] = result['city']
 
             return render_template('user.html')
+            
         except Exception as error:
+            #Dev info
             print(error)
     
     else:
