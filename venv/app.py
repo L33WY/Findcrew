@@ -39,14 +39,11 @@ def login():
             result = cursor.fetchone()
             cursor.close()
 
-            session['username'] = result['name']
-            session['lastname'] = result['lastName']
             session['nickname'] = result['nickname']
-            session['age'] = result['age']
             session['email'] = result['email']
-            session['city'] = result['city']
 
-            return render_template('user.html')
+
+            return redirect(url_for('user', nickname=session['nickname']))
             
         except Exception as error:
             #Dev info
@@ -56,8 +53,18 @@ def login():
         return render_template('login.html')
 
 
-@app.route('/user', methods=['GET', 'POST'])
-def user():
+######### Registration page ###########
+
+@app.route('/registration')
+def registration():
+    return render_template('registration.html')
+
+
+
+######### User page #############
+
+@app.route('/user/<nickname>', methods=['GET', 'POST'])
+def user(nickname):
     return render_template('user.html')
 
 if __name__ == "__main__":
