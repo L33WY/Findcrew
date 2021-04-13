@@ -79,15 +79,6 @@ def logout():
 
 @app.route('/registration', methods=['POST', 'GET'])
 def registration():
-    #clear old session error 
-    session.pop('n_error', None)
-    session.pop('e_error', None)
-    session.pop('p_error', None)
-    session.pop('tempNickname', None)
-    session.pop('tempEmail', None)
-    session.pop('tempPassword', None)
-    session.pop('tempPassword2', None)
-
 
     if request.method == 'POST':
 
@@ -179,9 +170,18 @@ def registration():
                 return render_template('registration.html')
 
         else:
-            return redirect(url_for('registration'))
+            return render_template('registration.html')
 
     else:
+        #clear old session error 
+        session.pop('n_error', None)
+        session.pop('e_error', None)
+        session.pop('p_error', None)
+        session.pop('tempNickname', None)
+        session.pop('tempEmail', None)
+        session.pop('tempPassword', None)
+        session.pop('tempPassword2', None)
+
         return render_template('registration.html')
 
 ######## end of registration page ##########
