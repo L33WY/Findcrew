@@ -1,6 +1,7 @@
 from flask import Flask, redirect, render_template, url_for, session, request
 from flask_mysqldb import MySQL
 import mysql.connector, bcrypt
+from email_validator import validate_email, EmailNotValidError
 
 #Flask setup
 app = Flask(__name__)
@@ -80,6 +81,8 @@ def logout():
 def registration():
     #clear old session error 
     session.pop('n_error', None)
+    session.pop('e_error', None)
+    session.pop('p_error', None)
 
 
     if request.method == 'POST':
@@ -88,22 +91,46 @@ def registration():
         nickname_input = request.form['nickname']
         email_input = request.form['email']
         password_input = request.form['password']
-        password_input2 = request.form['password']
+        password_input2 = request.form['repeatPassword']
 
         ### Registration validation ###
         registrationComplete = True
+
+        #remember temporary data inputs
+        session['tempNickname'] = nickname_input
+        session['tempEmail'] = email_input
 
         #nickname validation
         if len(nickname_input) < 4 or len(nickname_input) > 20:
             registrationComplete = False
             session['n_error'] = "Nick musi zawierać od 4 do 20 znaków !" 
 
-        if not nickname_input.isalpha():
+        if not nickname_input.isalnum():
             registrationComplete = False
             session['n_error'] = "Nick nie może zaiwerać znaków specjalnych !"
 
         #email validation
-        #??????????
+        try:
+            email_valid = validate_email(email_input)
+            email = email_valid.email
+        except EmailNotValidError as e:
+            #dev info
+            # print(str(e))
+            registrationComplete = False
+            session['e_error'] = "Podaj poprawny email !"
+
+        #password validation
+        if len(password_input) < 6 or len(password_input) > 20:
+            registrationComplete = False
+            session['p_error'] = "Hasło musi zawierać od 6 do 20 znaków !"
+        
+        if not password_input.isalnum():
+            registrationComplete = False
+            session['p_error'] = "Hasło nie może zaiwerać znaków specjalnych !"
+        
+        if password_input != password_input2:
+            registrationComplete = False
+            session['p_error'] = "Hasła muszą być identyczne !"
 
 
 

@@ -42,11 +42,17 @@
                     <div class="form-group mb-3">
                         <label class="label" for="email">Email</label>
                         <input name="email" type="email" class="form-control" placeholder="email" required>
+						{% if session.get('e_error') %}
+							<p class="errorInfo">{{session['e_error']}}</p>
+						{% endif %}
                     </div>
 
 				<div class="form-group mb-3">
 					<label class="label" for="password">Password</label>
 					<input name="password" type="password" class="form-control" placeholder="Password" required>
+					{% if session.get('p_error') %}
+							<p class="errorInfo">{{session['p_error']}}</p>
+						{% endif %}
 				</div>
 
                 <div class="form-group mb-3">
