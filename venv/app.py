@@ -35,6 +35,9 @@ def login():
             email_input = request.form['email']
             password_input = request.form['password']
 
+            #alphanumeric validation
+            
+
             #datebase validation
             try:
                 cursor = mydb.cursor(dictionary=True)
@@ -58,6 +61,7 @@ def login():
             except Exception as error:
                 #Dev info
                 print(error)
+                return render_template('login.html')
         
         else:
             return render_template('login.html')
