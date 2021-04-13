@@ -78,7 +78,39 @@ def logout():
 
 @app.route('/registration', methods=['POST', 'GET'])
 def registration():
-    return render_template('registration.html')
+    #clear old session error 
+    session.pop('n_error', None)
+
+
+    if request.method == 'POST':
+
+        #asign form variables
+        nickname_input = request.form['nickname']
+        email_input = request.form['email']
+        password_input = request.form['password']
+        password_input2 = request.form['password']
+
+        ### Registration validation ###
+        registrationComplete = True
+
+        #nickname validation
+        if len(nickname_input) < 4 or len(nickname_input) > 20:
+            registrationComplete = False
+            session['n_error'] = "Nick musi zawierać od 4 do 20 znaków !" 
+
+        if not nickname_input.isalpha():
+            registrationComplete = False
+            session['n_error'] = "Nick nie może zaiwerać znaków specjalnych !"
+
+        #email validation
+        #??????????
+
+
+
+        return render_template('registration.html')
+
+    else:
+        return render_template('registration.html')
 
 
 
