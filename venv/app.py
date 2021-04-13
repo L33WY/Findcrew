@@ -28,7 +28,7 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if session.get('logged_in') == True:
+    if not session.get('loggedIn') is None:
         return redirect(url_for('user', nickname=session['nickname'])) 
     else:
         if request.method == 'POST':
@@ -61,6 +61,13 @@ def login():
         
         else:
             return render_template('login.html')
+
+###### logout page ######
+@app.route('/logout')
+def logout():
+    for record in list(session.keys()):
+        session.pop(record)
+    return redirect(url_for('index'))
 
 
 ######### Registration page ###########
