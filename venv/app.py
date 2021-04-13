@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template, url_for, session, request
 from flask_mysqldb import MySQL
-import mysql.connector
+import mysql.connector, bcrypt
 
 #Flask setup
 app = Flask(__name__)
@@ -38,16 +38,22 @@ def login():
             #datebase validation
             try:
                 cursor = mydb.cursor(dictionary=True)
-                cursor.execute("SELECT * FROM users WHERE password = '%s' and email = '%s'" % (password_input, email_input))
+                cursor.execute("SELECT * FROM users WHERE email = '%s'" % (email_input))
                 result = cursor.fetchone()
                 cursor.close()
+                
+                #Able to login
+                if bcrypt.checkpw(password_input.encode('utf8'), result['password']):
+                    session['loggedIn'] = True
+                    session['nickname'] = result['nickname']
+                    session['email'] = result['email']
 
-                session['loggedIn'] = True
-                session['nickname'] = result['nickname']
-                session['email'] = result['email']
-
-
-                return redirect(url_for('user', nickname=session['nickname']))
+                    return redirect(url_for('user', nickname=session['nickname']))
+                #Unable to login
+                else:
+                    del result[:]
+                    return render_template('login.html')
+                    
                 
             except Exception as error:
                 #Dev info
@@ -59,7 +65,7 @@ def login():
 
 ######### Registration page ###########
 
-@app.route('/registration')
+@app.route('/registration', methods=['POST', 'GET'])
 def registration():
     return render_template('registration.html')
 
