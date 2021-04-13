@@ -28,15 +28,13 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if not session.get('loggedIn') is None:
+    if session.get('loggedIn'):
         return redirect(url_for('user', nickname=session['nickname'])) 
     else:
+        session.pop('error', None)
         if request.method == 'POST':
             email_input = request.form['email']
             password_input = request.form['password']
-
-            #alphanumeric validation
-            
 
             #datebase validation
             try:
@@ -55,12 +53,14 @@ def login():
                 #Unable to login
                 else:
                     del result[:]
+                    session['error'] = "Bledny email lub haslo !"
                     return render_template('login.html')
                     
                 
             except Exception as error:
                 #Dev info
-                print(error)
+                # print(error)
+                session['error'] = "Bledny email lub haslo !"
                 return render_template('login.html')
         
         else:
@@ -86,7 +86,10 @@ def registration():
 
 @app.route('/user/<nickname>', methods=['GET', 'POST'])
 def user(nickname):
-    return render_template('user.html')
+    if session.get('loggedIn'):
+        return render_template('user.html')
+    else:
+        return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)
