@@ -83,6 +83,10 @@ def registration():
     session.pop('n_error', None)
     session.pop('e_error', None)
     session.pop('p_error', None)
+    session.pop('tempNickname', None)
+    session.pop('tempEmail', None)
+    session.pop('tempPassword', None)
+    session.pop('tempPassword2', None)
 
 
     if request.method == 'POST':
@@ -134,14 +138,53 @@ def registration():
             registrationComplete = False
             session['p_error'] = "Hasła muszą być identyczne !"
 
+        ### validation with database ###
 
+        # is nick name avalible?
+        cursor = mydb.cursor(dictionary=True)
+        cursor.execute("SELECT nickname FROM users WHERE nickname = '%s'" % (nickname_input))
+        record = cursor.fetchall()      
 
-        return render_template('registration.html')
+        if len(record) > 0:
+            registrationComplete = False
+            session['n_error'] = "Nickname jest już zajęty!"
+        
+        #is Email avalible? 
+        cursor.execute("SELECT email FROM users WHERE email = '%s'" % (email_input))
+        record = cursor.fetchall()
+
+        if len(record) > 0:
+            registrationComplete = False
+            session['e_error'] = "Email jest już zajęty!"
+        
+        ###is Validation success? ###
+        if registrationComplete:
+
+            hashed_password = bcrypt.hashpw(password_input.encode('utf8'), bcrypt.gensalt())
+
+            try:
+                cursor = mydb.cursor(dictionary=True)
+                query = "INSERT INTO users (password, nickname, email) VALUES (%s, %s, %s)"
+                values = (hashed_password, nickname_input, email_input)
+                cursor.execute(query, values)
+                mydb.commit()
+                session['loggedIn'] = True
+                session['nickname'] = nickname_input
+                session['email'] = email_input
+                return redirect(url_for('user', nickname=nickname_input))
+
+            except Exception as e:
+                #Dev info
+                # print(str(e))
+                return render_template('registration.html')
+
+        else:
+            return redirect(url_for('registration'))
 
     else:
         return render_template('registration.html')
 
-
+######## end of registration page ##########
 
 ######### User page #############
 
