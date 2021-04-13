@@ -30,34 +30,60 @@
 							</div>
 				</div>
 						<form action="/registration" class="signup-form" method="POST">
+						<!--Nickname input-->
 					<div class="form-group mb-3">
-						<label class="label" for="nickname">Nickname</label>
-						<input name="nickname" type="text" class="form-control" placeholder="Nickname" required>
+						{% if session.get('tempNickname') %}
+							<label class="label" for="nickname">Nickname</label>
+							<input name="nickname" type="text" class="form-control" placeholder="Nickname" required value="{{session['tempNickname']}}">
+						{% else %}
+							<label class="label" for="nickname">Nickname</label>
+							<input name="nickname" type="text" class="form-control" placeholder="Nickname" required>						
+						{% endif %}
+
 						{% if session.get('n_error') %}
 							<p class="errorInfo">{{session['n_error']}}</p>
 						{% endif %}
 					</div>
 
-                    
+                    <!--Email input-->
                     <div class="form-group mb-3">
-                        <label class="label" for="email">Email</label>
-                        <input name="email" type="email" class="form-control" placeholder="email" required>
+						{% if session.get('tempEmail') %}
+							<label class="label" for="email">Email</label>
+							<input name="email" type="email" class="form-control" placeholder="email" required value="{{session['tempEmail']}}">
+						{% else %}
+							<label class="label" for="email">Email</label>
+							<input name="email" type="email" class="form-control" placeholder="email" required>
+						{% endif %}
+
 						{% if session.get('e_error') %}
 							<p class="errorInfo">{{session['e_error']}}</p>
 						{% endif %}
                     </div>
-
+				
+				<!--Password input-->
 				<div class="form-group mb-3">
-					<label class="label" for="password">Password</label>
-					<input name="password" type="password" class="form-control" placeholder="Password" required>
+					{% if session.get('tempPassword') %}
+						<label class="label" for="password">Password</label>
+						<input name="password" type="password" class="form-control" placeholder="Password" required value="{{session['tempPassword']}}">
+					{% else %}
+						<label class="label" for="password">Password</label>
+						<input name="password" type="password" class="form-control" placeholder="Password" required>
+					{% endif %}
+
 					{% if session.get('p_error') %}
 							<p class="errorInfo">{{session['p_error']}}</p>
 						{% endif %}
 				</div>
-
+				
+				<!--Password 2 input-->
                 <div class="form-group mb-3">
-					<label class="label" for="repeatPassword">Repeat Password</label>
-					<input name="repeatPassword" type="password" class="form-control" placeholder="Password" required>
+					{% if session.get('tempPassword2') %}
+						<label class="label" for="repeatPassword">Repeat Password</label>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Password" required value="{{session['tempPassword2']}}">
+					{% else %}
+						<label class="label" for="repeatPassword">Repeat Password</label>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Password" required>
+					{% endif %}
 				</div>
 				<div class="form-group">
 					<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>

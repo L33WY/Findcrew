@@ -99,6 +99,8 @@ def registration():
         #remember temporary data inputs
         session['tempNickname'] = nickname_input
         session['tempEmail'] = email_input
+        session['tempPassword'] = password_input
+        session['tempPassword2'] = password_input2
 
         #nickname validation
         if len(nickname_input) < 4 or len(nickname_input) > 20:
