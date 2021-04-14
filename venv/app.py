@@ -191,7 +191,7 @@ def registration():
 @app.route('/user/<nickname>', methods=['GET', 'POST'])
 def user(nickname):
     if session.get('loggedIn'):
-        return render_template('user.html')
+        return render_template('user-home.html')
     else:
         return redirect(url_for('login'))
 
