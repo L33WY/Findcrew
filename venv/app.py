@@ -191,7 +191,20 @@ def registration():
 @app.route('/user/<nickname>', methods=['GET', 'POST'])
 def user(nickname):
     if session.get('loggedIn'):
-        return render_template('user-home.html')
+        
+        ##### Connect to db and grab all advertisement #####
+
+        try:
+            cursor = mydb.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM advertisement ORDER BY date")
+            advertisements = cursor.fetchall()
+            cursor.close()
+
+        except Exception as e:
+            #Dev info
+            print(e)
+
+        return render_template('user-home.html', advertisements=advertisements)
     else:
         return redirect(url_for('login'))
 

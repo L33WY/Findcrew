@@ -6,3 +6,16 @@
 body {
   padding-top: 56px;
 }
+
+.navbar-brand{
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.navbar-brand span{
+  color: #FF0000;
+}
+.card-img-top{
+  object-fit: cover;
+  max-height: 300px;
+}
