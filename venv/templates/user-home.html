@@ -54,9 +54,13 @@
 
         {% for ad in advertisements %}
 
-            <!-- advertaisment -->
+        <h1>{{ ad['url'] }}</h1>
+
+          <!-- advertaisment -->
+
           <div class="card mb-4">
-            <img class="card-img-top" src="{{ url_for('static', filename=ad['url']) }}" alt="Card image cap">
+            <img class="card-img-top" src="{{ url_for('static', filename=ad['url'])}}" alt="Card image cap">
+                
             <div class="card-body">
               <h2 class="card-title">{{ ad['title'] }}</h2>
               <p class="card-text">{{ ad['description'] }}</p>
