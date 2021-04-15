@@ -48,25 +48,26 @@
       <div class="col-md-8">
 
         <h1 class="my-4">Witaj {{session['nickname']}} !
-          <small>Secondary Text</small>
-        </h1>
+          <small>Zobacz jakie wydarzenia dzieją się w twojej okolicy, lub utwórz własne !</small>
+          <a href="http://127.0.0.1:5000/user/Lewy/create-ad" class="btn btn-primary">Utwórz</a>
+
+        </h1>        
+
+        <!-- Addint new advertaisment-->
 
 
         {% for ad in advertisements %}
 
           <!-- advertaisment -->
 
-          <h1>{{ ad['time'] }}</h1>
-
           <div class="card mb-4">
             <img class="card-img-top" src="{{ url_for('static', filename=ad['url'])}}" alt="Card image cap">
-                <div class="ad__date-time">{{ ad['date'] }} {{ ad['time'] }}</div>
+                <div class="ad__date-time"><span>{{ ad['date'] }} </span> &nbsp;{{ ad['time'] }}</div>
             <div class="card-body">
               <h2 class="card-title">{{ ad['title'] }}</h2>
               <p class="card-text">{{ ad['description'] }}</p>
               <h4>INFO</h4>
               <p>Kategoria: {{ ad['category'] }} | ilość graczy: {{ ad['persons'] }} | Lokalizacja: {{ ad['location'] }}</p>
-              <p>Data: {{ ad['date'] }} | Godzina: {{ ad['time'] }}</p>
               <a href="#" class="btn btn-primary">Dołącz &rarr;</a>
             </div>
             <div class="card-footer text-muted">
@@ -79,47 +80,6 @@
         {% endfor %}
 
 
-        <!-- advertaisment -->
-        <div class="card mb-4">
-          <img class="card-img-top" src="{{ url_for('static', filename='images/c3.jpg') }}" alt="Card image cap">
-          <div class="card-body">
-            <h2 class="card-title">Koszykówka</h2>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
-            <a href="#" class="btn btn-primary">Read More &rarr;</a>
-          </div>
-          <div class="card-footer text-muted">
-            Posted on January 1, 2020 by
-            <a href="#">Start Bootstrap</a>
-          </div>
-        </div>
-
-        <!-- advertaisment -->
-        <div class="card mb-4">
-          <img class="card-img-top" src="{{ url_for('static', filename='images/c2.jpg') }}" alt="Card image cap">
-          <div class="card-body">
-            <h2 class="card-title">Piłka nożna</h2>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
-            <a href="#" class="btn btn-primary">Read More &rarr;</a>
-          </div>
-          <div class="card-footer text-muted">
-            Posted on January 1, 2020 by
-            <a href="#">Start Bootstrap</a>
-          </div>
-        </div>
-
-        <!-- advertaisment -->
-        <div class="card mb-4">
-          <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
-          <div class="card-body">
-            <h2 class="card-title">Post Title</h2>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
-            <a href="#" class="btn btn-primary">Read More &rarr;</a>
-          </div>
-          <div class="card-footer text-muted">
-            Posted on January 1, 2020 by
-            <a href="#">Start Bootstrap</a>
-          </div>
-        </div>
 
         <!-- Pagination -->
         <ul class="pagination justify-content-center mb-4">

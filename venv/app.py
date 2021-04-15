@@ -208,5 +208,18 @@ def user(nickname):
     else:
         return redirect(url_for('login'))
 
+######## user-page-create advertisement ##########
+@app.route('/user/<nickname>/create-ad', methods=['GET', 'POST'])
+def create_ad(nickname):
+    if session.get('loggedIn'):
+        
+        ##### Creating new advertisement #####
+
+
+        return render_template('user-create-ad.html')
+    else:
+        return redirect(url_for('login'))
+
+
 if __name__ == "__main__":
     app.run(debug=True)

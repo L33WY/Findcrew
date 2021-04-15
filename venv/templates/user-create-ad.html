@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Logowanie{% endblock %}
+
+
+{% block head %}
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='css/vendor/bootstrap/css/bootstrap.min.css') }}"rel="stylesheet" >
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/user-home.css') }}"rel="stylesheet" >
+    <link href="{{ url_for('static', filename='css/user-create-ad.css') }}"rel="stylesheet" >
+{% endblock %}
+
+{% block content %}
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">find<span>crew</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Tablica
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Profil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="http://127.0.0.1:5000/logout">Wyloguj</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+
+  <!--Creat advertisement tile1-->
+
+
+  <div class="create-ad__container">
+
+    <div class="create-ad__tile-left">
+        
+        <h1 class="my-4 create-ad__header">Tworzenie Wydarzenia</h1>
+        <h2 class="my-4">
+            <small>{{session['nickname']}} świetnie że wychodzisz z inicjatywą wyciagnięcia paru osób na świeże powietze ! Wybierz miejsce, godzine i dzień oraz liczbe szukanych osób. Do dzieła !</small>
+        </h2>  
+    </div>
+
+    <div class="create-ad__tile-right">
+        <img class="create-ad__img" alt="zdjecie ekipy" src="{{ url_for('static', filename='images/create-ad.jpg') }}">
+    </div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static', filename='css/vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='css/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+{% endblock %}
