@@ -19,3 +19,11 @@ body {
   object-fit: cover;
   max-height: 300px;
 }
+
+.ad__date-time{
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #343a40;
+  color: #fff;
+}

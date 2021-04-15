@@ -196,7 +196,7 @@ def user(nickname):
 
         try:
             cursor = mydb.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM advertisement ORDER BY date")
+            cursor.execute("SELECT title, description, persons, location, category, date, url, TIME_FORMAT(time, '%H:%i') as time FROM advertisement ORDER BY date")
             advertisements = cursor.fetchall()
             cursor.close()
 
