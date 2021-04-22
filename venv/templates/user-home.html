@@ -49,7 +49,7 @@
 
         <h1 class="my-4">Witaj {{session['nickname']}} !
           <small>Zobacz jakie wydarzenia dzieją się w twojej okolicy, lub utwórz własne !</small>
-          <a href="http://127.0.0.1:5000/user/Lewy/create-ad" class="btn btn-primary">Utwórz</a>
+          <a href="http://127.0.0.1:5000/user/{{session['nickname']}}/create-ad" class="btn btn-primary">Utwórz</a>
 
         </h1>        
 
@@ -78,6 +78,7 @@
 
 
         {% endfor %}
+
 
 
 
