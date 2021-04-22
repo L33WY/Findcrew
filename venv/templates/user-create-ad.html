@@ -65,50 +65,80 @@
 
   <div class="create-ad__container">
     <form class="create-ad__form">
+
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="inputEmail4">Email</label>
-          <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+          <label for="title">Tytuł</label>
+          <input type="text" class="form-control" id="title" placeholder="Tytuł">
         </div>
+
         <div class="form-group col-md-6">
-          <label for="inputPassword4">Password</label>
-          <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="inputAddress">Address</label>
-        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-      </div>
-      <div class="form-group">
-        <label for="inputAddress2">Address 2</label>
-        <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="inputCity">City</label>
-          <input type="text" class="form-control" id="inputCity">
-        </div>
-        <div class="form-group col-md-4">
-          <label for="inputState">State</label>
+          <label for="inputState">Kategoria</label>
           <select id="inputState" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
+            <option >Piłka Nożna</option>
+            <option>Koszykówka</option>
+            <option>Siatkówka</option>
+            <option>Piłka Ręczna</option>
           </select>
         </div>
-        <div class="form-group col-md-2">
-          <label for="inputZip">Zip</label>
-          <input type="text" class="form-control" id="inputZip">
-        </div>
       </div>
-      <div class="form-group">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="gridCheck">
-          <label class="form-check-label" for="gridCheck">
-            Check me out
-          </label>
-        </div>
+
+      <div class="form-group ">
+        <label for="inputAddress">Opis</label>
+          <input type="text" class="form-control" id="description" placeholder="Opis">
       </div>
-      <button type="submit" class="btn btn-primary">Sign in</button>
+      
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="inputState">Lokalizacja</label>
+          <select id="inputState" class="form-control">
+            <option selected>Zespół Szkół Ogólnokształcących nr. 1</option>
+            <option>Boisko Komarowo</option>
+            <option>MKS Czarni Pruszcz Gdański</option>
+            <option>Szkoła podstawowa nr.4</option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="time">Godzina</label>
+          <input type="time" class="form-control" id="time" placeholder="Godzina">
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="inputZip">Godzina</label>
+          <input type="date" class="form-control" id="inputZip">
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="inputState">Szukane osoby</label>
+          <select id="inputState" class="form-control">
+            <option selected>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+          </select>
+
+        </div>
+            
+        <button type="submit" class="btn btn-primary btn-create-ad">Utwórz</button>
+
+
+        
+      </div>
+      
+      
+
     </form>
 
 
