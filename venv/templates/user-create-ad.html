@@ -16,7 +16,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">find<span>crew</span></a>
+      <a class="navbar-brand" href="/user/{{session['nickname']}}">find<span>crew</span></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -63,70 +63,61 @@
 
   </div>
 
+  <!--Adding new advertisement-->
+
   <div class="create-ad__container">
-    <form class="create-ad__form">
+    <form method="POST" action="#" name="create-ad" class="create-ad__form">
 
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="title">Tytuł</label>
-          <input type="text" class="form-control" id="title" placeholder="Tytuł">
+          <input type="text" name="title" class="form-control" id="title" placeholder="Tytuł">
         </div>
 
         <div class="form-group col-md-6">
           <label for="inputState">Kategoria</label>
-          <select id="inputState" class="form-control">
-            <option >Piłka Nożna</option>
-            <option>Koszykówka</option>
-            <option>Siatkówka</option>
-            <option>Piłka Ręczna</option>
+          <select id="inputState" name="category" class="form-control">
+            <option value="Piłka Nożna">Piłka Nożna</option>
+            <option value="Koszykówka">Koszykówka</option>
+            <option value="Siatkówka">Siatkówka</option>
+            <option value="Piłka Ręczna">Piłka Ręczna</option>
           </select>
         </div>
       </div>
 
       <div class="form-group ">
         <label for="inputAddress">Opis</label>
-          <input type="text" class="form-control" id="description" placeholder="Opis">
+          <input type="text" name="description" class="form-control" id="description" placeholder="Opis">
       </div>
       
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="inputState">Lokalizacja</label>
-          <select id="inputState" class="form-control">
-            <option selected>Zespół Szkół Ogólnokształcących nr. 1</option>
-            <option>Boisko Komarowo</option>
-            <option>MKS Czarni Pruszcz Gdański</option>
-            <option>Szkoła podstawowa nr.4</option>
+          <select id="inputState" class="form-control" name="location">
+            <option value="Zespół Szkół Ogólnokształcących nr. 1" selected>Zespół Szkół Ogólnokształcących nr. 1</option>
+            <option value="Boisko Komarowo">Boisko Komarowo</option>
+            <option value="MKS Czarni Pruszcz Gdański">MKS Czarni Pruszcz Gdański</option>
+            <option value="Szkoła podstawowa nr.4">Szkoła podstawowa nr.4</option>
           </select>
         </div>
 
         <div class="form-group col-md-4">
           <label for="time">Godzina</label>
-          <input type="time" class="form-control" id="time" placeholder="Godzina">
+          <input type="time" name="time" class="form-control" id="time" placeholder="Godzina">
         </div>
 
         <div class="form-group col-md-4">
-          <label for="inputZip">Godzina</label>
-          <input type="date" class="form-control" id="inputZip">
+          <label for="inputZip">Date</label>
+          <input type="date" name="date" class="form-control" id="inputZip">
         </div>
 
         <div class="form-group col-md-4">
           <label for="inputState">Szukane osoby</label>
           <select id="inputState" class="form-control">
             <option selected>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            <option>6</option>
-            <option>7</option>
-            <option>8</option>
-            <option>9</option>
-            <option>10</option>
-            <option>11</option>
-            <option>12</option>
-            <option>13</option>
-            <option>14</option>
-            <option>15</option>
+            {% for num in range(2, 16) %}
+              <option value={{num}}>{{num}}</option>
+            {% endfor %}
           </select>
 
         </div>
