@@ -71,7 +71,8 @@
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="title">Tytuł</label>
-          <input type="text" name="title" class="form-control" id="title" placeholder="Tytuł">
+          <input type="text" name="title" class="form-control" id="title" placeholder="Tytuł" required>
+          <p class="errorInfo">{{session['t_error']}}</p>
         </div>
 
         <div class="form-group col-md-6">
@@ -87,7 +88,7 @@
 
       <div class="form-group ">
         <label for="inputAddress">Opis</label>
-          <input type="text" name="description" class="form-control" id="description" placeholder="Opis">
+          <input type="text" name="description" class="form-control" id="description" placeholder="Opis" required>
       </div>
       
       <div class="form-row">
@@ -103,17 +104,17 @@
 
         <div class="form-group col-md-4">
           <label for="time">Godzina</label>
-          <input type="time" name="time" class="form-control" id="time" placeholder="Godzina">
+          <input type="time" name="time" class="form-control" id="time" placeholder="Godzina" required>
         </div>
 
         <div class="form-group col-md-4">
           <label for="inputZip">Date</label>
-          <input type="date" name="date" class="form-control" id="inputZip">
+          <input type="date" name="date" class="form-control" id="inputZip" required>
         </div>
 
         <div class="form-group col-md-4">
           <label for="inputState">Szukane osoby</label>
-          <select id="inputState" class="form-control">
+          <select name="persons" id="inputState" class="form-control">
             <option selected>1</option>
             {% for num in range(2, 16) %}
               <option value={{num}}>{{num}}</option>

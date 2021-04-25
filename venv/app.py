@@ -212,11 +212,50 @@ def user(nickname):
 @app.route('/user/<nickname>/create-ad', methods=['GET', 'POST'])
 def create_ad(nickname):
     if session.get('loggedIn'):
-        
+
         ##### Creating new advertisement #####
 
+        if request.method == 'POST':
+            #fetch input data
 
-        return render_template('user-create-ad.html')
+            input_title = request.form['title']
+            input_description = request.form['description']
+            input_category =  request.form['category']
+            input_location = request.form['location']
+            input_date = request.form['date']
+            input_time = request.form['time']
+            input_persons = request.form['persons']            
+
+            ### input data validation ###
+
+            createAdComplete = True
+
+            ## title validation ##
+            if len(input_title) < 4 or len(input_title) > 40:
+                createAdComplete = False
+                session['t_error'] = "Tytuł może mieć od 4 do 40 znaków"
+            
+            if not input_title.isalnum():
+                createAdComplete = False
+                session['t_error'] = "Tytuł nie może zawierać znaków specjalnych"
+            
+            ## description validation
+            if len(input_description) < 15 or len(input_description) > 200:
+                createAdComplete = False
+                session['d_error'] = "Opis może zawierać od 15 do 200 znaków"
+            
+            if not input_description.isalnum():
+                createAdComplete = False
+                session['d_error'] = "Opis nie może zawierać znaków specjalnych"            
+
+
+            return render_template('user-create-ad.html')
+        else:
+            session.pop('t_error', None)
+            return render_template('user-create-ad.html')
+        
+
+        
     else:
         return redirect(url_for('login'))
 
