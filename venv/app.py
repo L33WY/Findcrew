@@ -40,7 +40,7 @@ def login():
             #datebase validation
             try:
                 cursor = mydb.cursor(dictionary=True)
-                cursor.execute("SELECT * FROM users WHERE email = '%s'" % (email_input))
+                cursor.execute("SELECT * FROM users2 WHERE email = '%s'" % (email_input))
                 result = cursor.fetchone()
                 cursor.close()
                 
@@ -133,7 +133,7 @@ def registration():
 
         # is nick name avalible?
         cursor = mydb.cursor(dictionary=True)
-        cursor.execute("SELECT nickname FROM users WHERE nickname = '%s'" % (nickname_input))
+        cursor.execute("SELECT nickname FROM users2 WHERE nickname = '%s'" % (nickname_input))
         record = cursor.fetchall()      
 
         if len(record) > 0:
@@ -141,7 +141,7 @@ def registration():
             session['n_error'] = "Nickname jest już zajęty!"
         
         #is Email avalible? 
-        cursor.execute("SELECT email FROM users WHERE email = '%s'" % (email_input))
+        cursor.execute("SELECT email FROM users2 WHERE email = '%s'" % (email_input))
         record = cursor.fetchall()
 
         if len(record) > 0:
@@ -155,7 +155,7 @@ def registration():
 
             try:
                 cursor = mydb.cursor(dictionary=True)
-                query = "INSERT INTO users (password, nickname, email) VALUES (%s, %s, %s)"
+                query = "INSERT INTO users2 (password, nickname, email) VALUES (%s, %s, %s)"
                 values = (hashed_password, nickname_input, email_input)
                 cursor.execute(query, values)
                 mydb.commit()
@@ -196,7 +196,7 @@ def user(nickname):
 
         try:
             cursor = mydb.cursor(dictionary=True)
-            cursor.execute("SELECT title, description, persons, location, category, date, url, TIME_FORMAT(time, '%H:%i') as time FROM advertisement ORDER BY date")
+            cursor.execute("SELECT title, description, persons, location, category, date, url, TIME_FORMAT(time, '%H:%i') as time FROM advertisement2 ORDER BY date")
             advertisements = cursor.fetchall()
             cursor.close()
 
