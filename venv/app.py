@@ -219,6 +219,18 @@ def create_ad(nickname):
 
         if request.method == 'POST':
 
+            #clear old session
+            if session.get('tempTitle'):
+                session.pop('tempTitle')
+            if session.get('tempDescription'):
+                session.pop('tempDescription')
+            if session.get('t_error'):
+                session.pop('t_error')
+            if session.get('d_error'):
+                session.pop('d_error')
+            if session.get('date_error'):
+                session.pop('date_error')
+
             #fetch input data
 
             input_title = request.form['title']
@@ -257,33 +269,24 @@ def create_ad(nickname):
 
             ## date validation
             currentDate = datetime.today().strftime('%Y-%m-%d')
+            currentDate = datetime.strptime(currentDate, '%Y-%m-%d')
+            try:
+                input_date = datetime.strptime(input_date, '%Y-%m-%d')
 
-            if input_date < datetime.today().strftime('%y-%m-%d'):
+                if input_date < currentDate:
+                    createAdComplete = False
+                    session['date_error'] = "Data musi być aktualna"
+                
+
+                avalibleTime = currentDate + timedelta(days=7)
+
+                if input_date > avalibleTime:
+                    createAdComplete = False
+                    session['date_error'] = "wydarzenie może być maksymalnie z tygodniowym wyprzedzeniem"
+            except:
                 createAdComplete = False
-                session['date_error'] = "Data musi być aktualna"
-            
-            avalibleTime = datetime.strptime(currentDate, '%Y-%m-%d')
-            avalibleTime = avalibleTime + timedelta(days=7)
-            avalibleTime = avalibleTime.strftime('%Y-%m-%d')
-
-            if input_date > avalibleTime:
-                createAdComplete = False
-                session['date_error'] = "wydarzenie może być maksymalnie z tygodniowym wydarzeniem"
-
-            # print("%$$$$$$$$$$$$$$$$$$$")
-            # print(type(currentDate))
-            # print("##########################")
-            # avalibleTime = datetime.strptime(currentDate, '%Y-%m-%d')
-            # print(type(avalibleTime))
-
-            # avalibleTime = avalibleTime + timedelta(days=7)
-            # print(avalibleTime)
-            # print("######pppppppppppppp###########")
-
-
-            
-        
-
+                session['date_error'] = "Data musi być w formacie YYYY/MM/DD"
+                    
             ### try add new advertisement to database ###
 
             # if createAdComplete == True:
