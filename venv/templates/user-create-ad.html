@@ -70,9 +70,19 @@
 
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="title">Tytuł</label>
-          <input type="text" name="title" class="form-control" id="title" placeholder="Tytuł" required>
-          <p class="errorInfo">{{session['t_error']}}</p>
+          {% if session.get('tempTitle') %}
+            <label for="title">Tytuł</label>
+            <input type="text" name="title" class="form-control" id="title" placeholder="Tytuł" required value="{{session['tempTitle']}}">
+              {% if session.get('t_error') %}
+                <p class="errorInfo">{{session['t_error']}}</p>
+              {% endif %}
+          {% else %}
+            <label for="title">Tytuł</label>
+            <input type="text" name="title" class="form-control" id="title" placeholder="Tytuł" required>
+            {% if session.get('t_error') %}
+              <p class="errorInfo">{{session['t_error']}}</p>
+            {% endif %}
+          {% endif %}
         </div>
 
         <div class="form-group col-md-6">
@@ -87,8 +97,19 @@
       </div>
 
       <div class="form-group ">
-        <label for="inputAddress">Opis</label>
+        {% if session.get('tempDescription') %}
+          <label for="inputAddress">Opis</label>
+          <input type="text" name="description" class="form-control" id="description" placeholder="Opis" required value="{{session['tempDescription']}}">
+          {% if session.get('d_error') %}
+            <p class="errorInfo">{{session['d_error']}}</p>
+          {% endif %}
+        {% else %}
+          <label for="inputAddress">Opis</label>
           <input type="text" name="description" class="form-control" id="description" placeholder="Opis" required>
+          {% if session.get('d_error') %}
+            <p class="errorInfo">{{session['d_error']}}</p>
+          {% endif %}
+        {% endif %}
       </div>
       
       <div class="form-row">

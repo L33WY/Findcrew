@@ -216,6 +216,7 @@ def create_ad(nickname):
         ##### Creating new advertisement #####
 
         if request.method == 'POST':
+
             #fetch input data
 
             input_title = request.form['title']
@@ -224,7 +225,11 @@ def create_ad(nickname):
             input_location = request.form['location']
             input_date = request.form['date']
             input_time = request.form['time']
-            input_persons = request.form['persons']            
+            input_persons = request.form['persons']
+
+            #create temporary input
+            session['tempTitle'] = input_title
+            session['tempDescription'] = input_description        
 
             ### input data validation ###
 
@@ -248,10 +253,18 @@ def create_ad(nickname):
                 createAdComplete = False
                 session['d_error'] = "Opis nie może zawierać znaków specjalnych"            
 
-
             return render_template('user-create-ad.html')
         else:
-            session.pop('t_error', None)
+            #clear old session
+            if session.get('tempTitle'):
+                session.pop('tempTitle')
+            if session.get('tempDescription'):
+                session.pop('tempDescription')
+            if session.get('t_error'):
+                session.pop('t_error')
+            if session.get('d_error'):
+                session.pop('d_error')
+
             return render_template('user-create-ad.html')
         
 
