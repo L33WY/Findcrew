@@ -2,6 +2,8 @@ from flask import Flask, redirect, render_template, url_for, session, request
 from flask_mysqldb import MySQL
 import mysql.connector, bcrypt
 from email_validator import validate_email, EmailNotValidError
+from datetime import datetime, timedelta, timedelta
+
 
 #Flask setup
 app = Flask(__name__)
@@ -251,7 +253,46 @@ def create_ad(nickname):
             
             if not input_description.isalnum():
                 createAdComplete = False
-                session['d_error'] = "Opis nie może zawierać znaków specjalnych"            
+                session['d_error'] = "Opis nie może zawierać znaków specjalnych"
+
+            ## date validation
+            currentDate = datetime.today().strftime('%Y-%m-%d')
+
+            if input_date < datetime.today().strftime('%y-%m-%d'):
+                createAdComplete = False
+                session['date_error'] = "Data musi być aktualna"
+            
+            avalibleTime = datetime.strptime(currentDate, '%Y-%m-%d')
+            avalibleTime = avalibleTime + timedelta(days=7)
+            avalibleTime = avalibleTime.strftime('%Y-%m-%d')
+
+            if input_date > avalibleTime:
+                createAdComplete = False
+                session['date_error'] = "wydarzenie może być maksymalnie z tygodniowym wydarzeniem"
+
+            # print("%$$$$$$$$$$$$$$$$$$$")
+            # print(type(currentDate))
+            # print("##########################")
+            # avalibleTime = datetime.strptime(currentDate, '%Y-%m-%d')
+            # print(type(avalibleTime))
+
+            # avalibleTime = avalibleTime + timedelta(days=7)
+            # print(avalibleTime)
+            # print("######pppppppppppppp###########")
+
+
+            
+        
+
+            ### try add new advertisement to database ###
+
+            # if createAdComplete == True:
+            #     try:
+            #         cursor = mydb.cursor(dictionary=True)
+            #         query = "INSERT INTO advertisement2 (title, category, description, location, time, date, pesons, owner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            #         values = (input_title, input_category, input_description, input_location, input_time, input_date, input_persons, session['nickname'])
+
+
 
             return render_template('user-create-ad.html')
         else:
@@ -264,6 +305,8 @@ def create_ad(nickname):
                 session.pop('t_error')
             if session.get('d_error'):
                 session.pop('d_error')
+            if session.get('date_error'):
+                session.pop('date_error')
 
             return render_template('user-create-ad.html')
         
