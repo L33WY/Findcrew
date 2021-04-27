@@ -253,19 +253,21 @@ def create_ad(nickname):
             if len(input_title) < 4 or len(input_title) > 40:
                 createAdComplete = False
                 session['t_error'] = "Tytuł może mieć od 4 do 40 znaków"
-            
-            if not input_title.isalnum():
+
+            if not all(char.isalnum() or char.isspace() for char in input_title):
                 createAdComplete = False
                 session['t_error'] = "Tytuł nie może zawierać znaków specjalnych"
+
             
             ## description validation
             if len(input_description) < 15 or len(input_description) > 200:
                 createAdComplete = False
                 session['d_error'] = "Opis może zawierać od 15 do 200 znaków"
             
-            if not input_description.isalnum():
+            if not all(char.isalnum() or char.isspace() or char=='.' for char in input_description):
                 createAdComplete = False
                 session['d_error'] = "Opis nie może zawierać znaków specjalnych"
+
 
             ## date validation
             currentDate = datetime.today().strftime('%Y-%m-%d')
@@ -289,15 +291,22 @@ def create_ad(nickname):
                     
             ### try add new advertisement to database ###
 
-            # if createAdComplete == True:
-            #     try:
-            #         cursor = mydb.cursor(dictionary=True)
-            #         query = "INSERT INTO advertisement2 (title, category, description, location, time, date, pesons, owner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            #         values = (input_title, input_category, input_description, input_location, input_time, input_date, input_persons, session['nickname'])
-
+            if createAdComplete == True:
+                try:
+                    cursor = mydb.cursor(dictionary=True)
+                    query = "INSERT INTO advertisement2 (title, category, description, location, time, date, persons, owner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+                    values = (input_title, input_category, input_description, input_location, input_time, input_date, input_persons, session['nickname'])
+                    cursor.execute(query, values)
+                    mydb.commit()
+                
+                except Exception as e:
+                    #dev info
+                    # print(e)
+                    redirect(url_for('create-ad', nickname=session['nickname']))
 
 
             return render_template('user-create-ad.html')
+
         else:
             #clear old session
             if session.get('tempTitle'):
