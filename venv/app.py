@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template, url_for, session, request
 from flask_mysqldb import MySQL
-import mysql.connector, bcrypt
+import mysql.connector, bcrypt, myModules
 from email_validator import validate_email, EmailNotValidError
 from datetime import datetime, timedelta, timedelta
 
@@ -17,6 +17,13 @@ mydb = mysql.connector.connect(
   password="",
   database="findcrew"
 )
+
+### My own functions ###
+
+def clearSession(sessionToClear):
+    for record in sessionToClear:
+        if session.get(record):
+                session.pop(record, None)
 
 
 #################### Wirtyny ###################
@@ -83,6 +90,10 @@ def logout():
 def registration():
 
     if request.method == 'POST':
+
+        #clear old session error 
+        sessionToClear = ('n_error', 'e_error', 'p_error', 'tempNickname', 'tempEmail', 'tempPassword', 'tempPassword2')
+        clearSession(sessionToClear)
 
         #asign form variables
         nickname_input = request.form['nickname']
@@ -176,13 +187,8 @@ def registration():
 
     else:
         #clear old session error 
-        session.pop('n_error', None)
-        session.pop('e_error', None)
-        session.pop('p_error', None)
-        session.pop('tempNickname', None)
-        session.pop('tempEmail', None)
-        session.pop('tempPassword', None)
-        session.pop('tempPassword2', None)
+        sessionToClear = ('n_error', 'e_error', 'p_error', 'tempNickname', 'tempEmail', 'tempPassword', 'tempPassword2')
+        clearSession(sessionToClear)
 
         return render_template('registration.html')
 
@@ -220,16 +226,8 @@ def create_ad(nickname):
         if request.method == 'POST':
 
             #clear old session
-            if session.get('tempTitle'):
-                session.pop('tempTitle')
-            if session.get('tempDescription'):
-                session.pop('tempDescription')
-            if session.get('t_error'):
-                session.pop('t_error')
-            if session.get('d_error'):
-                session.pop('d_error')
-            if session.get('date_error'):
-                session.pop('date_error')
+            sessionToClear = ('t_error', 'd_error', 'date_error', 'tempTitle', 'tempDescription')
+            clearSession(sessionToClear)
 
             #fetch input data
 
@@ -287,7 +285,7 @@ def create_ad(nickname):
                     session['date_error'] = "wydarzenie może być maksymalnie z tygodniowym wyprzedzeniem"
             except:
                 createAdComplete = False
-                session['date_error'] = "Data musi być w formacie YYYY/MM/DD"
+                session['date_error'] = "Data musi być w formacie DD/MM/YYYY"
                     
             ### try add new advertisement to database ###
 
@@ -309,16 +307,8 @@ def create_ad(nickname):
 
         else:
             #clear old session
-            if session.get('tempTitle'):
-                session.pop('tempTitle')
-            if session.get('tempDescription'):
-                session.pop('tempDescription')
-            if session.get('t_error'):
-                session.pop('t_error')
-            if session.get('d_error'):
-                session.pop('d_error')
-            if session.get('date_error'):
-                session.pop('date_error')
+            sessionToClear = ('t_error', 'd_error', 'date_error', 'tempTitle', 'tempDescription')
+            clearSession(sessionToClear)
 
             return render_template('user-create-ad.html')
         
