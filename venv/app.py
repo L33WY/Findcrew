@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template, url_for, session, request
 from flask_mysqldb import MySQL
-import mysql.connector, bcrypt, myModules
+import mysql.connector, bcrypt
 from email_validator import validate_email, EmailNotValidError
 from datetime import datetime, timedelta, timedelta
 
@@ -286,14 +286,24 @@ def create_ad(nickname):
             except:
                 createAdComplete = False
                 session['date_error'] = "Data musi być w formacie DD/MM/YYYY"
+
+            ## assign suitable img url
+            if input_location == "Zespół Szkół Ogólnokształcących nr. 1":
+                locationImgUrl = 'images/a1.jpg'
+            elif input_location == "Boisko Komarowo":
+                locationImgUrl = 'images/a2.jpg'
+            elif input_location == "Boisko na Chicago":
+                locationImgUrl = 'images/a3.jpg'
+            elif input_location == "Faktoria":
+                locationImgUrl = 'images/a4.jpg'
                     
             ### try add new advertisement to database ###
 
             if createAdComplete == True:
                 try:
                     cursor = mydb.cursor(dictionary=True)
-                    query = "INSERT INTO advertisement2 (title, category, description, location, time, date, persons, owner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-                    values = (input_title, input_category, input_description, input_location, input_time, input_date, input_persons, session['nickname'])
+                    query = "INSERT INTO advertisement2 (title, category, description, location, time, date, persons, owner, url) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    values = (input_title, input_category, input_description, input_location, input_time, input_date, input_persons, session['nickname'], locationImgUrl)
                     cursor.execute(query, values)
                     mydb.commit()
                 
