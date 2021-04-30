@@ -204,7 +204,7 @@ def user(nickname):
 
         try:
             cursor = mydb.cursor(dictionary=True)
-            cursor.execute("SELECT title, description, persons, location, category, date, url, TIME_FORMAT(time, '%H:%i') as time FROM advertisement2 ORDER BY date")
+            cursor.execute("SELECT id, title, description, persons, location, category, date, url, owner, TIME_FORMAT(time, '%H:%i') as time FROM advertisement2 ORDER BY date")
             advertisements = cursor.fetchall()
             cursor.close()
 
@@ -215,6 +215,28 @@ def user(nickname):
         return render_template('user-home.html', advertisements=advertisements)
     else:
         return redirect(url_for('login'))
+
+############ user-join advertisement #############
+@app.route('/user/join', methods=['POST', 'GET'])
+def userJoin():
+    if session['loggedIn'] == True:
+
+        if request.method == 'POST':
+
+            print("$$$$$$$$$$XXXXXXXXXXXXX$$$$$$$$$$")
+            print('########################################')
+            id = request.form['id']
+            print(id)
+            #connect to db
+            # try:
+            #     cursor = mydb.cursor(dictionary=True)
+            return redirect(url_for('user', nickname = session['nickname']))
+    else:
+        return redirect(url_for('login'))
+
+
+
+
 
 ######## user-page-create advertisement ##########
 @app.route('/user/<nickname>/create-ad', methods=['GET', 'POST'])

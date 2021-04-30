@@ -68,11 +68,16 @@
               <p class="card-text">{{ ad['description'] }}</p>
               <h4>INFO</h4>
               <p>Kategoria: {{ ad['category'] }} | ilość graczy: {{ ad['persons'] }} | Lokalizacja: {{ ad['location'] }}</p>
-              <a href="#" class="btn btn-primary">Dołącz &rarr;</a>
+              <!-- <a href="http://127.0.0.1:5000/user/{{session['nickname']}}/join" class="btn btn-primary">Dołącz &rarr;</a> -->
+              <form action="http://127.0.0.1:5000/user/join" method="POST" class="join-ad">
+                <input name="id" type="hidden" value="{{ ad['id'] }}">
+                <input class="btn btn-primary" type="submit" value="Dołącz">
+              </form>
             </div>
             <div class="card-footer text-muted">
-              Posted on January 1, 2020 by
-              <a href="#">Start Bootstrap</a>
+              Utworzone przez
+              <a href="#">{{ ad['owner'] }}</a>
+              Zadeklarowali udział: 
             </div>
           </div>
 
