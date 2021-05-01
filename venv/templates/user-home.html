@@ -77,7 +77,13 @@
             <div class="card-footer text-muted">
               Utworzone przez
               <a href="#">{{ ad['owner'] }}</a>
-              Zadeklarowali udział: 
+              Zadeklarowali udział:
+              {% for player in players %}
+                  {% if player['advertisement_id'] == ad['id'] %}
+                      <a href="#">{{player['player_nick']}}</a> ,
+                  {% endif %}
+              {% endfor %}
+
             </div>
           </div>
 

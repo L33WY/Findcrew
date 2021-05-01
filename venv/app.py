@@ -58,6 +58,7 @@ def login():
                     session['loggedIn'] = True
                     session['nickname'] = result['nickname']
                     session['email'] = result['email']
+                    session['userID'] = result['id']
 
                     return redirect(url_for('user', nickname=session['nickname']))
                 #Unable to login
@@ -206,13 +207,17 @@ def user(nickname):
             cursor = mydb.cursor(dictionary=True)
             cursor.execute("SELECT id, title, description, persons, location, category, date, url, owner, TIME_FORMAT(time, '%H:%i') as time FROM advertisement2 ORDER BY date")
             advertisements = cursor.fetchall()
+            
+            cursor.execute("SELECT player_nick, user_id, advertisement_id FROM players")
+            players = cursor.fetchall()
             cursor.close()
+
 
         except Exception as e:
             #Dev info
             print(e)
 
-        return render_template('user-home.html', advertisements=advertisements)
+        return render_template('user-home.html', advertisements=advertisements, players=players)
     else:
         return redirect(url_for('login'))
 
@@ -222,14 +227,55 @@ def userJoin():
     if session['loggedIn'] == True:
 
         if request.method == 'POST':
-
-            print("$$$$$$$$$$XXXXXXXXXXXXX$$$$$$$$$$")
-            print('########################################')
-            id = request.form['id']
-            print(id)
+            
             #connect to db
-            # try:
-            #     cursor = mydb.cursor(dictionary=True)
+            try:
+                #check how many players are still to find
+                advertisement_id = int(request.form['id'])
+                cursor = mydb.cursor(dictionary=True)
+                cursor.execute("SELECT persons FROM advertisement2 WHERE id=%s", (advertisement_id, ))
+                playersToFind = cursor.fetchone()
+                playersToFind = playersToFind['persons']
+                
+                #Check if avalible spot
+                if playersToFind-1 >= 0:
+                    playersToFind -= 1
+
+                    #check if player already in advertisemnt
+                    try:
+                        cursor.execute("SELECT * FROM players WHERE user_id=%s AND advertisement_id=%s", (session['userID'], advertisement_id))
+                        recordFound = len(cursor.fetchall())
+
+                        if recordFound > 0:
+                            return redirect(url_for('user', nickname = session['nickname']))
+
+                        else:
+                            try:
+                                #assign user to advertisement and change searched playes number
+                                cursor.execute("INSERT INTO players VALUES (%s, %s, %s)", (session['nickname'], session['userID'], advertisement_id))
+
+                                cursor.execute("UPDATE advertisement2 SET persons=%s WHERE id=%s", (playersToFind, advertisement_id))
+                                mydb.commit()
+
+                            except Exception as e:
+                                #dev info
+                                print(e)
+                                return redirect(url_for('user', nickname = session['nickname']))
+
+                    except Exception as e:
+                        #dev info 
+                        print(e)
+                        return redirect(url_for('user', nickname = session['nickname']))
+
+                else:
+                    return redirect(url_for('user', nickname = session['nickname']))
+
+
+            except Exception as e:
+                #dev info
+                print(e)
+                return redirect(url_for('user', nickname = session['nickname']))
+
             return redirect(url_for('user', nickname = session['nickname']))
     else:
         return redirect(url_for('login'))
