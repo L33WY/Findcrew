@@ -173,10 +173,7 @@ def registration():
                 values = (hashed_password, nickname_input, email_input)
                 cursor.execute(query, values)
                 mydb.commit()
-                session['loggedIn'] = True
-                session['nickname'] = nickname_input
-                session['email'] = email_input
-                return redirect(url_for('user', nickname=nickname_input))
+                return redirect(url_for('login'))
 
             except Exception as e:
                 #Dev info
