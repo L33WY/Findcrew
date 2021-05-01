@@ -173,7 +173,7 @@ def registration():
                 values = (hashed_password, nickname_input, email_input)
                 cursor.execute(query, values)
                 mydb.commit()
-                return redirect(url_for('login'))
+                return render_template('login.html', registrationComplete=registrationComplete)
 
             except Exception as e:
                 #Dev info
@@ -371,14 +371,16 @@ def create_ad(nickname):
                     values = (input_title, input_category, input_description, input_location, input_time, input_date, input_persons, session['nickname'], locationImgUrl)
                     cursor.execute(query, values)
                     mydb.commit()
+
+                    return render_template('user-create-ad.html', createAdComplete=createAdComplete)
                 
                 except Exception as e:
                     #dev info
                     # print(e)
-                    redirect(url_for('create-ad', nickname=session['nickname']))
-
-
-            return render_template('user-create-ad.html')
+                    return redirect(url_for('create-ad', nickname=session['nickname']))
+            
+            else:
+                return render_template('user-create-ad.html')
 
         else:
             #clear old session

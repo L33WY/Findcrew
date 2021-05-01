@@ -58,8 +58,13 @@
 				<p class="text-center">Not a member? <a  href="http://127.0.0.1:5000/registration">Sign Up</a></p>
 			</div>
 			</div>
+			{% if registrationComplete == True %}
+				<div class="alert alert-success">
+					<strong>Udało się!</strong> Konto zostało utworzone, możesz się teraz zalogować. 
+				</div>
+			{% endif %}
 			</div>
-		</div>
+		</div> 
 	</div>
 </section>
 

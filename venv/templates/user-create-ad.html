@@ -63,6 +63,12 @@
 
   </div>
 
+  {% if createAdComplete == True %}
+      <div class="create-ad__container alert alert-success" style="background-color: #d4edda;">
+        <strong>Udało się!</strong> &nbsp; Wydarzenie zostało otworzone, możesz je zobaczyć teraz na tablicy. 
+      </div>
+	{% endif %}
+
   <!--Adding new advertisement-->
 
   <div class="create-ad__container">
