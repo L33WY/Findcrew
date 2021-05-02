@@ -71,7 +71,14 @@
               <!-- <a href="http://127.0.0.1:5000/user/{{session['nickname']}}/join" class="btn btn-primary">Dołącz &rarr;</a> -->
               <form action="http://127.0.0.1:5000/user/join" method="POST" class="join-ad">
                 <input name="id" type="hidden" value="{{ ad['id'] }}">
-                <input class="btn btn-primary" type="submit" value="Dołącz">
+                
+                <!-- {% for player in players %}
+                  {% if player['advertisement_id'] == ad['id'] and player['user_id'] == session['userID'] %}
+                      <input class="btn btn-primary" type="submit" value="Opuść">
+                  {% endif %}
+                {% endfor %} -->
+
+                <input class="btn btn-primary" type="submit" value={{getButtonValue(players,ad)}}>
               </form>
             </div>
             <div class="card-footer text-muted">

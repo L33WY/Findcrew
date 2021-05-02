@@ -43,7 +43,7 @@ body {
 
 .btn-primary {
   background-color: var(--dark);
-  color: var(--accent);
+  color: var(--light);
   border-color: var(--dark);
 }
 .btn-primary:hover {

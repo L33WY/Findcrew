@@ -25,6 +25,15 @@ def clearSession(sessionToClear):
         if session.get(record):
                 session.pop(record, None)
 
+def getButtonValue(players, ad):
+    buttonValue = "Dołącz"
+    for player in players:
+        if player['advertisement_id'] == ad['id'] and player['user_id'] == session['userID']:
+            buttonValue = "Opuść"
+    return buttonValue
+app.jinja_env.globals.update(getButtonValue=getButtonValue)
+            
+
 
 #################### Wirtyny ###################
 
@@ -234,21 +243,40 @@ def userJoin():
                 playersToFind = cursor.fetchone()
                 playersToFind = playersToFind['persons']
                 
-                #Check if avalible spot
-                if playersToFind-1 >= 0:
-                    playersToFind -= 1
 
-                    #check if player already in advertisemnt
-                    try:
-                        cursor.execute("SELECT * FROM players WHERE user_id=%s AND advertisement_id=%s", (session['userID'], advertisement_id))
-                        recordFound = len(cursor.fetchall())
 
-                        if recordFound > 0:
-                            return redirect(url_for('user', nickname = session['nickname']))
+                #check if player already in advertisemnt
+                try:
+                    cursor.execute("SELECT * FROM players WHERE user_id=%s AND advertisement_id=%s", (session['userID'], advertisement_id))
+                    recordValues = cursor.fetchone()
 
-                        else:
+                    if recordValues != None:
+                        if recordValues['user_id'] == session['userID'] and advertisement_id == recordValues['advertisement_id']:
+                            #tuser is trying to quit advertisement
                             try:
-                                #assign user to advertisement and change searched playes number
+                                #Delete relation with advertisement in players table
+                                cursor.execute("DELETE FROM players WHERE user_id=%s AND advertisement_id=%s", (session['userID'], advertisement_id))
+
+                                #Increse looking players number in advertisement table
+                                playersToFind += 1
+                                cursor.execute("UPDATE advertisement2 SET persons=%s WHERE id=%s", (playersToFind, advertisement_id))
+
+                                mydb.commit()
+                                
+
+                            except Exception as e:
+                                #dev info
+                                print(e)
+
+                        return redirect(url_for('user', nickname = session['nickname']))
+
+                    else:
+                        #Check if avalible spot
+                        if playersToFind-1 >= 0:
+                            playersToFind -= 1
+                            
+                            #assign user to advertisement and change searched playes number
+                            try:
                                 cursor.execute("INSERT INTO players VALUES (%s, %s, %s)", (session['nickname'], session['userID'], advertisement_id))
 
                                 cursor.execute("UPDATE advertisement2 SET persons=%s WHERE id=%s", (playersToFind, advertisement_id))
@@ -259,13 +287,12 @@ def userJoin():
                                 print(e)
                                 return redirect(url_for('user', nickname = session['nickname']))
 
-                    except Exception as e:
-                        #dev info 
-                        print(e)
-                        return redirect(url_for('user', nickname = session['nickname']))
-
-                else:
+                except Exception as e:
+                    #dev info 
+                    print(e)
                     return redirect(url_for('user', nickname = session['nickname']))
+
+
 
 
             except Exception as e:
