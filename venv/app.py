@@ -239,11 +239,14 @@ def userJoin():
                 #check how many players are still to find
                 advertisement_id = int(request.form['id'])
                 cursor = mydb.cursor(dictionary=True)
-                cursor.execute("SELECT persons FROM advertisement2 WHERE id=%s", (advertisement_id, ))
-                playersToFind = cursor.fetchone()
-                playersToFind = playersToFind['persons']
-                
+                cursor.execute("SELECT persons, owner FROM advertisement2 WHERE id=%s", (advertisement_id, ))
+                result = cursor.fetchone()
+                playersToFind = result['persons']
 
+                #check if user is avertisement owner
+                advertisementOwner = result['owner']
+                if advertisementOwner == session['nickname']:
+                    return redirect(url_for('user', nickname = session['nickname']))
 
                 #check if player already in advertisemnt
                 try:
