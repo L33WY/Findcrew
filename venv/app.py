@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, url_for, session, request
 from flask_mysqldb import MySQL
 import mysql.connector, bcrypt
 from email_validator import validate_email, EmailNotValidError
-from datetime import datetime, timedelta, timedelta
+from datetime import datetime, timedelta, date
 
 
 #Flask setup
@@ -30,6 +30,8 @@ def getButtonValue(players, ad):
     for player in players:
         if player['advertisement_id'] == ad['id'] and player['user_id'] == session['userID']:
             buttonValue = "Opuść"
+        elif ad['owner'] == session['nickname']:
+            buttonValue = "Usuń"
     return buttonValue
 app.jinja_env.globals.update(getButtonValue=getButtonValue)
             
@@ -210,8 +212,10 @@ def user(nickname):
         ##### Connect to db and grab all advertisement #####
 
         try:
+            currentDay = date.today()
+            print(currentDay)
             cursor = mydb.cursor(dictionary=True)
-            cursor.execute("SELECT id, title, description, persons, location, category, date, url, owner, TIME_FORMAT(time, '%H:%i') as time FROM advertisement2 ORDER BY date")
+            cursor.execute("SELECT id, title, description, persons, location, category, date, url, owner, TIME_FORMAT(time, '%H:%i') as time FROM advertisement2 WHERE date>=%s ORDER BY date", (currentDay,))
             advertisements = cursor.fetchall()
             
             cursor.execute("SELECT player_nick, user_id, advertisement_id FROM players")
@@ -243,9 +247,18 @@ def userJoin():
                 result = cursor.fetchone()
                 playersToFind = result['persons']
 
-                #check if user is avertisement owner
+                #check if user is avertisement owner and try delete advertisement
                 advertisementOwner = result['owner']
                 if advertisementOwner == session['nickname']:
+                    try:
+                        cursor.execute("DELETE FROM players WHERE advertisement_id=%s", (advertisement_id, ))
+                        cursor.execute("DELETE FROM advertisement2 WHERE id=%s", (advertisement_id, ))
+                        mydb.commit()
+
+                    except Exception as e:
+                        #dev info
+                        print(e)
+
                     return redirect(url_for('user', nickname = session['nickname']))
 
                 #check if player already in advertisemnt
@@ -308,7 +321,35 @@ def userJoin():
         return redirect(url_for('login'))
 
 
+####### user-page my advertisement ##########
+@app.route('/user/<nickname>/my-ads')
+def my_ads(nickname):
+    if session.get('loggedIn'):
+        
+        ##### Connect to db and grab all advertisement #####
 
+        try:
+            currentDay = date.today()
+            print(currentDay)
+            cursor = mydb.cursor(dictionary=True)
+            # cursor.execute("SELECT advertisement2.*, TIME_FORMAT(time, '%H:%i') as time FROM advertisement2 WHERE advertisement2.owner = 'Lewy' OR advertisement2.id IN (SELECT players.advertisement_id FROM players WHERE players.player_nickname = 'Lewy') ORDER BY date")
+            cursor.execute("SELECT * FROM advertisement_2")
+            advertisements = cursor.fetchall()
+            
+            cursor.execute("SELECT player_nick, user_id, advertisement_id FROM players")
+            players = cursor.fetchall()
+            cursor.close()
+
+
+        except Exception as e:
+            #Dev info
+            print(e)
+
+        return render_template('user-my-ads.html', advertisements=advertisements, players=players)
+    else:
+        return redirect(url_for('login'))
+
+########## end of my-ads page ##########
 
 
 ######## user-page-create advertisement ##########

@@ -58,37 +58,43 @@
 
         {% for ad in advertisements %}
 
-        {% if ad['persons'] > 0 %}
-          <!-- advertaisment -->
+            {% for player1 in players %}
 
-            <div class="card mb-4">
-              <img class="card-img-top" src="{{ url_for('static', filename=ad['url'])}}" alt="Card image cap">
-                  <div class="ad__date-time"><span>{{ ad['date'] }} </span> &nbsp;{{ ad['time'] }}</div>
-              <div class="card-body">
-                <h2 class="card-title">{{ ad['title'] }}</h2>
-                <p class="card-text">{{ ad['description'] }}</p>
-                <h4>INFO</h4>
-                <p>Kategoria: {{ ad['category'] }} | ilość graczy: {{ ad['persons'] }} | Lokalizacja: {{ ad['location'] }}</p>
-                <!-- <a href="http://127.0.0.1:5000/user/{{session['nickname']}}/join" class="btn btn-primary">Dołącz &rarr;</a> -->
-                <form action="http://127.0.0.1:5000/user/join" method="POST" class="join-ad">
-                  <input name="id" type="hidden" value="{{ ad['id'] }}">
-                  <input class="btn btn-primary" type="submit" value={{getButtonValue(players,ad)}}>
-                </form>
-              </div>
-              <div class="card-footer text-muted">
-                Utworzone przez
-                <a href="#">{{ ad['owner'] }}</a>
-                Zadeklarowali udział:
-                {% for player in players %}
-                    {% if player['advertisement_id'] == ad['id'] %}
-                        <a href="#">{{player['player_nick']}}</a> ,
-                    {% endif %}
-                {% endfor %}
+                {% if ad['owner'] == session['nickname'] or player1['user_id'] == session['userID'] %}
 
-              </div>
-            </div>
-          
-          {% endif %}
+                <!-- advertaisment -->
+
+                <div class="card mb-4">
+                    <img class="card-img-top" src="{{ url_for('static', filename=ad['url'])}}" alt="Card image cap">
+                        <div class="ad__date-time"><span>{{ ad['date'] }} </span> &nbsp;{{ ad['time'] }}</div>
+                    <div class="card-body">
+                    <h2 class="card-title">{{ ad['title'] }}</h2>
+                    <p class="card-text">{{ ad['description'] }}</p>
+                    <h4>INFO</h4>
+                    <p>Kategoria: {{ ad['category'] }} | ilość graczy: {{ ad['persons'] }} | Lokalizacja: {{ ad['location'] }}</p>
+                    <!-- <a href="http://127.0.0.1:5000/user/{{session['nickname']}}/join" class="btn btn-primary">Dołącz &rarr;</a> -->
+                    <form action="http://127.0.0.1:5000/user/join" method="POST" class="join-ad">
+                        <input name="id" type="hidden" value="{{ ad['id'] }}">
+                        <input class="btn btn-primary" type="submit" value={{getButtonValue(players,ad)}}>
+                    </form>
+                    </div>
+                    <div class="card-footer text-muted">
+                    Utworzone przez
+                    <a href="#">{{ ad['owner'] }}</a>
+                    Zadeklarowali udział:
+                    {% for player in players %}
+                        {% if player['advertisement_id'] == ad['id'] %}
+                            <a href="#">{{player['player_nick']}}</a> ,
+                        {% endif %}
+                    {% endfor %}
+
+                    </div>
+                </div>
+
+                {% endif %}
+                
+            {% endfor %}
+
 
         {% endfor %}
 
@@ -110,18 +116,6 @@
       <!-- Sidebar Widgets Column -->
       <div class="col-md-4">
 
-        <!-- Search Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Search</h5>
-          <div class="card-body">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for...">
-              <span class="input-group-append">
-                <button class="btn btn-secondary" type="button">Go!</button>
-              </span>
-            </div>
-          </div>
-        </div>
 
         <!-- Categories Widget -->
         <div class="card my-4">
@@ -158,24 +152,13 @@
           </div>
         </div>
 
-        <!-- Side Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Side Widget</h5>
-          <div class="card-body">
-            You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-          </div>
-        </div>
 
-      </div>
-
-    </div>
-    <!-- /.row -->
 
   </div>
   <!-- /.container -->
 
   <!-- Footer -->
-  <footer class="py-5 bg-dark">
+  <footer style="width: 100%;" class="py-5 bg-dark">
     <div class="container">
       <p class="m-0 text-center text-white">Dawid Lewandowski &copy; FIND<span style="color: red;">CREW</span> 2021</p>
     </div>
