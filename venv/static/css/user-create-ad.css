@@ -1,0 +1,52 @@
+
+
+.my-4 {
+    text-align: justify;
+    padding: 0 30px;
+    top: 50%;
+    /* align-self: center; */
+}
+
+.create-ad__header {
+    text-align: center;
+}
+
+
+.create-ad__img {
+    object-fit: cover;
+    max-height: 350px;
+    width: 100%;
+}
+
+
+@media (min-width: 800px){
+    .create-ad__container {
+        max-width: 1140px;
+        margin: 0 auto;
+        display: flex;
+        margin-top: 50px;
+        border: 0.5px solid var(--dark);
+        border-radius: 25px;
+        background-color: var(--light);
+        }
+    
+    .create-ad__tile-left {
+        flex: 1 1 60%;
+    }
+    .create-ad__tile-right {
+        flex: 1 1 40%;
+        border-radius: 25px;
+    }
+
+    .create-ad__img {
+        border-radius: 25px;
+    }
+}
+.create-ad__form {
+    padding: 15px 30px;
+    width: 100%;
+}
+
+.btn-create-ad {
+   width: 100%;
+}

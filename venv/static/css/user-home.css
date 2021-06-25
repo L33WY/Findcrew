@@ -1,0 +1,58 @@
+/*!
+ * Start Bootstrap - Blog Home (https://startbootstrap.com/template/blog-home)
+ * Copyright 2013-2020 Start Bootstrap
+ * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-blog-home/blob/master/LICENSE)
+ */
+:root {
+  --dark: #343a40;
+  --accent: #FF0000;
+  --light: rgb(236, 236, 236);
+}
+
+body {
+  padding-top: 56px;
+}
+
+.navbar-brand{
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.navbar-brand span{
+  color: var(--accent);
+}
+.card-img-top{
+  object-fit: cover;
+  max-height: 300px;
+}
+
+.ad__date-time{
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--dark);
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: 500;
+  line-height: 1.2;
+  font-size: 1.5rem;
+}
+
+.ad__date-time span{border-right: 1px dotted #fff;}
+
+.btn-primary {
+  background-color: var(--dark);
+  color: var(--light);
+  border-color: var(--dark);
+}
+.btn-primary:hover {
+  background-color: #221a20;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn-primary:focus {
+  background-color: #221a20;
+  border-color: var(--accent);
+  color: var(--accent);
+}

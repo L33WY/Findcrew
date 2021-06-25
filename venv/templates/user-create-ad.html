@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% block title %}Logowanie{% endblock %}
+
+
+{% block head %}
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='css/vendor/bootstrap/css/bootstrap.min.css') }}"rel="stylesheet" >
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/user-home.css') }}"rel="stylesheet" >
+    <link href="{{ url_for('static', filename='css/user-create-ad.css') }}"rel="stylesheet" >
+{% endblock %}
+
+
+{% block content %}
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/user/{{session['nickname']}}">find<span>crew</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="http://127.0.0.1:5000/user/{{session['nickname']}}">Tablica
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Profil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="http://127.0.0.1:5000/logout">Wyloguj</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+
+  <!--Creat advertisement tile1-->
+
+  <div class="create-ad__container">
+
+
+
+    <div class="create-ad__tile-left">
+        
+        <h1 class="my-4 create-ad__header">Tworzenie Wydarzenia</h1>
+        <h2 class="my-4">
+            <small>{{session['nickname']}} świetnie że wychodzisz z inicjatywą wyciagnięcia paru osób na świeże powietze ! Wybierz miejsce, godzine i dzień oraz liczbe szukanych osób. Do dzieła !</small>
+        </h2>  
+    </div>
+
+    <div class="create-ad__tile-right">
+        <img class="create-ad__img" alt="zdjecie ekipy" src="{{ url_for('static', filename='images/create-ad.jpg') }}">
+    </div> 
+
+  </div>
+
+  {% if createAdComplete == True %}
+      <div class="create-ad__container alert alert-success" style="background-color: #d4edda;">
+        <strong>Udało się!</strong> &nbsp; Wydarzenie zostało otworzone, możesz je zobaczyć teraz na tablicy. 
+      </div>
+	{% endif %}
+
+  <!--Adding new advertisement-->
+
+  <div class="create-ad__container">
+    <form method="POST" action="#" name="create-ad" class="create-ad__form">
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          {% if session.get('tempTitle') %}
+            <label for="title">Tytuł</label>
+            <input type="text" name="title" class="form-control" id="title" placeholder="Tytuł" required value="{{session['tempTitle']}}">
+              {% if session.get('t_error') %}
+                <p class="errorInfo">{{session['t_error']}}</p>
+              {% endif %}
+          {% else %}
+            <label for="title">Tytuł</label>
+            <input type="text" name="title" class="form-control" id="title" placeholder="Tytuł" required>
+            {% if session.get('t_error') %}
+              <p class="errorInfo">{{session['t_error']}}</p>
+            {% endif %}
+          {% endif %}
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="inputState">Kategoria</label>
+          <select id="inputState" name="category" class="form-control">
+            <option value="Piłka Nożna">Piłka Nożna</option>
+            <option value="Koszykówka">Koszykówka</option>
+            <option value="Siatkówka">Siatkówka</option>
+            <option value="Piłka Ręczna">Piłka Ręczna</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        {% if session.get('tempDescription') %}
+          <label for="inputAddress">Opis</label>
+          <input type="text" name="description" class="form-control" id="description" placeholder="Opis" required value="{{session['tempDescription']}}">
+          {% if session.get('d_error') %}
+            <p class="errorInfo">{{session['d_error']}}</p>
+          {% endif %}
+        {% else %}
+          <label for="inputAddress">Opis</label>
+          <input type="text" name="description" class="form-control" id="description" placeholder="Opis" required>
+          {% if session.get('d_error') %}
+            <p class="errorInfo">{{session['d_error']}}</p>
+          {% endif %}
+        {% endif %}
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="inputState">Lokalizacja</label>
+          <select id="inputState" class="form-control" name="location">
+            <option value="Zespół Szkół Ogólnokształcących nr. 1" selected>Zespół Szkół Ogólnokształcących nr. 1</option>
+            <option value="Boisko Komarowo">Boisko Komarowo</option>
+            <option value="Faktoria">Faktoria</option>
+            <option value="Boisko na Chicago">Boisko na Chicago</option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="time">Godzina</label>
+          <input type="time" name="time" class="form-control" id="time" placeholder="Godzina" required>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="inputZip">Date</label>
+          <input type="date" name="date" class="form-control" id="inputZip" required>
+          {% if session.get('date_error') %}
+            <p class="errorInfo">{{session['date_error']}}</p>
+          {% endif %}
+        </div>
+
+
+        <div class="form-group col-md-4">
+          <label for="inputState">Szukane osoby</label>
+          <select name="persons" id="inputState" class="form-control">
+            <option selected>1</option>
+            {% for num in range(2, 16) %}
+              <option value={{num}}>{{num}}</option>
+            {% endfor %}
+          </select>
+
+        </div>
+            
+        <button type="submit" class="btn btn-primary btn-create-ad">Utwórz</button>
+
+
+        
+      </div>
+      
+      
+
+    </form>
+
+
+  </div>
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static', filename='css/vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='css/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+{% endblock %}

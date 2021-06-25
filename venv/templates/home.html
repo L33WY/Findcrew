@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Landing Page{% endblock %}
+
+{% block head %} <link rel="stylesheet" href="static/css/styleHome.css"> {% endblock %}
+
+{% block content %}
+
+<section class="section__home-page">
+    <div class="home-page__container"> 
+        
+        <div class="home-page__tile1" >
+            <h1>Find<span>crew</span></h1>
+            <div class="home-page__content">
+                
+
+                <div class="box-3">
+                    <a href="http://127.0.0.1:5000/login"><div class="btn btn-three">
+                    <span>Logowanie</span>
+                    </div></a>
+                    <a href="http://127.0.0.1:5000/registration"><div class="btn btn-three">
+                        <span>Rejestracja</span>
+                    </div></a>
+                </div>
+
+            </div>
+        </div>
+
+        <p>Brakuje wam paru osób aby zagrać mecz w pełnym squadzie? A może szukacie drużyny która będzie w w stanie wam sprostać! Lub po prostu jesteś ciekawy czy dzieje się coś ciekawego w okolicy. Jesli tak to trafiłeś w dobre miejsce! FIND<span>CREW</span> łączy miejscowych sportowców, oraz pomaga w organizacji "podwórkowych" eventów sportowych.</p>
+
+    </div>
+
+</section>
+
+{% endblock %}
